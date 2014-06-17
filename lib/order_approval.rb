@@ -21,22 +21,22 @@ module OrderApproval
 
   module Authorization
     module Permissions
-      ## TODO - Not able to get this working
-      #def can_manage_order_holds
-      #  can :manage, OrderHold
-      #end
 
-      #def can_approve_sub_order_holds
-      #  UserEditContext.call(@user, @site)
-      #  sub_claim_ids = @user.full_claims.map do |claim|
-      #    claim.descendants
-      #  end.flatten.map(&:id)
+      def can_manage_order_holds
+        can :manage, OrderHold
+      end
 
-      #  can :view, OrderHold, claim_id: sub_claim_ids
-      #  can :read, OrderHold, claim_id: sub_claim_ids
-      #  can :manage, OrderHold, claim_id: sub_claim_ids
-      #  can :approve_sub_orders, OrderHold, claim_id: sub_claim_ids
-      #end
+      def can_approve_sub_order_holds
+        UserEditContext.call(@user, @site)
+        sub_claim_ids = @user.full_claims.map do |claim|
+          claim.descendants
+        end.flatten.map(&:id)
+
+        can :view, OrderHold, claim_id: sub_claim_ids
+        can :read, OrderHold, claim_id: sub_claim_ids
+        can :manage, OrderHold, claim_id: sub_claim_ids
+        can :approve_sub_orders, OrderHold, claim_id: sub_claim_ids
+      end
     end
   end
 
