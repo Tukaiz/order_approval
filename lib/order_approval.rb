@@ -27,15 +27,15 @@ module OrderApproval
       end
 
       def can_approve_sub_order_holds
+        ## the order hold record has a column claim_id
+        ## That claim_id defines which claim the order will need
+        ## approval from.
         UserEditContext.call(@user, @site)
-        sub_claim_ids = @user.full_claims.map do |claim|
-          claim.descendants
-        end.flatten.map(&:id)
-
-        can :view, OrderHold, claim_id: sub_claim_ids
-        can :read, OrderHold, claim_id: sub_claim_ids
-        can :manage, OrderHold, claim_id: sub_claim_ids
-        can :approve_sub_orders, OrderHold, claim_id: sub_claim_ids
+        ids = @user.full_claims.map { |claim| claim.id }
+        can :view, OrderHold, claim_id: ids
+        can :read, OrderHold, claim_id: ids
+        can :manage, OrderHold, claim_id: ids
+        can :approve_sub_orders, OrderHold, claim_id: ids
       end
     end
   end
