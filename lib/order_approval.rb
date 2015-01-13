@@ -23,10 +23,15 @@ module OrderApproval
     module Permissions
 
       def can_manage_order_holds
+        ## Can view the approvals section
+        can :view_order_approval_section, Order
+
         can :manage, OrderHold
       end
 
       def can_approve_sub_order_holds
+        ## Can view the approvals section
+        can :view_order_approval_section, Order
         ## the order hold record has a column claim_id
         ## That claim_id defines which claim the order will need
         ## approval from.
