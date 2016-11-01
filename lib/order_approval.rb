@@ -37,8 +37,7 @@ module OrderApproval
         ## the order hold record has a column claim_id
         ## That claim_id defines which claim the order will need
         ## approval from.
-        UserEditContext.call(@user, @site)
-        ids = @user.full_claims.map { |claim| claim.id }
+        ids = @user.claims.for_site(@site).map { |claim| claim.id }
 
         ## Can read any order for which there is at least 1 order_hold that needs approval
         can :read, Order, id: Order.for_approvals(ids).pluck(:id)
